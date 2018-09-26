@@ -16,7 +16,23 @@ namespace cs
         public Org Org {get; set;}
         public string SourceRef {get; set;}
 
-        public ICollection<SemVer> Dependencies { get; set; }
-        public ICollection<Artifact> Artifacts { get; set; }
+
+        private string _dependencies;
+        [NotMapped]
+        public string[] Dependencies
+        {
+            get { 
+                if(_dependencies == null)
+                {
+                    return new string[0];
+                }
+
+                return _dependencies.Split(','); 
+            }
+            set
+            {
+                _dependencies = string.Join($"{','}", value);
+            }
+        }
     }
 }

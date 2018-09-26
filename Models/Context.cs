@@ -30,6 +30,10 @@ namespace cs
             modelBuilder.Entity<Org>()
                 .HasAlternateKey(c => c.Name)
                 .HasName("AlternateKey_Name");
+
+            modelBuilder.Entity<Package>()
+            .Property<string>("DependencyCollection")
+            .HasField("_dependencies");
         }
 
         public DbSet<Artifact> Artifacts { get; set; }

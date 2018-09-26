@@ -12,6 +12,8 @@ namespace cs
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ArtifactId { get; set; }
         public string Version { get; set; }
+
+        public Package Package { get; set; }
         public string Url {get; set;}
     }
 }

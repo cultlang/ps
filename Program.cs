@@ -32,6 +32,26 @@ namespace cs
                 ctx.SaveChanges();
             }
 
+            using (var ctx = new InstanceContext())
+            {
+                for (int i = 0; i < 100; ++i)
+                    ctx.Packages.Add(Mock.DependentPackages(ctx).Generate());
+
+                ctx.SaveChanges();
+            }
+            using (var ctx = new InstanceContext())
+            {
+                foreach(var f in ctx.Packages)
+                {
+                    for(var i = 0; i < 4; ++i)
+                    for(var j = 0; j < 4; ++j)
+                    {
+                        ctx.Artifacts.Add(Mock.Artifact(ctx, f, String.Format("v{0}.{1}.0", i, j)).Generate());
+                    }
+                }
+                ctx.SaveChanges();
+            }
+
             CreateWebHostBuilder(args).Build().Run();
         }
 

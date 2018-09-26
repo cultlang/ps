@@ -45,14 +45,16 @@ namespace cs.Controllers
         {
             using (var ctx = new InstanceContext())
             {
-                return new JsonResult(
-                    ctx.Packages
-                        .Include(p => p.Artifacts)
+                var p = ctx.Packages
                         .Include(e => e.Org)
                         .Where(e => e.Org.Name == org)
                         .Where(e => e.Name == name)
-                        .FirstOrDefault()
-                        .Artifacts
+                        .FirstOrDefault();
+
+                return new JsonResult(
+                    ctx.Artifacts
+                        .Where(e => e.Package.PackageId == p.PackageId)
+                        .ToList()
                 );            
             } 
         }
@@ -62,17 +64,18 @@ namespace cs.Controllers
         {
             using (var ctx = new InstanceContext())
             {
-                return new JsonResult(
-                    ctx.Packages
-                        .Include(p => p.Artifacts)
+                var p = ctx.Packages
                         .Include(e => e.Org)
                         .Where(e => e.Org.Name == org)
-                        .Where(e => e.Name == name)
-                        .FirstOrDefault()
-                        .Artifacts
+                        .Where(e => e.Name == name);
+
+                
+                return new JsonResult(
+                    ctx.Artifacts
+                        .Where(e => e.Package == p)   
                         .Where(e => e.Version == version)
                         .FirstOrDefault()
-                );            
+                );
             } 
         }
         [HttpGet("{org}/{name}/artifacts/{version}/resolve")]
@@ -80,15 +83,17 @@ namespace cs.Controllers
         {
             using (var ctx = new InstanceContext())
             {
-                var res = ctx.Packages
-                        .Include(p => p.Artifacts)
+                var p = ctx.Packages
                         .Include(e => e.Org)
                         .Where(e => e.Org.Name == org)
-                        .Where(e => e.Name == name)
-                        .FirstOrDefault()
-                        .Artifacts
+                        .Where(e => e.Name == name);
+
+                
+                var res = ctx.Artifacts
+                        .Where(e => e.Package == p)   
                         .Where(e => e.Version == version)
                         .FirstOrDefault();
+                
                 return Redirect(res.Url);
             } 
         }
