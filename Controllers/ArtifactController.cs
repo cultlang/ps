@@ -18,6 +18,9 @@ namespace cs.Controllers
         {
             using (var ctx = new InstanceContext())
             {
+                
+                var auth = new AuthContext(ctx, HttpContext);
+
                 var stream = System.IO.File.Open($"static/{org}/{package}/{org}_{package}_{version}.zip", FileMode.Open);
 
                 if(stream == null)

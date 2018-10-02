@@ -34,7 +34,9 @@ namespace cs
             modelBuilder.Entity<Package>()
             .Property<string>("DependencyCollection")
             .HasField("_dependencies");
+        
         }
+        public DbSet<Account> Accounts { get; set; }
 
         public DbSet<Artifact> Artifacts { get; set; }
         public DbSet<Package> Packages  { get; set; }
